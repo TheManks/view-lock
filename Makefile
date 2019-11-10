@@ -4,5 +4,5 @@ upload: compile
 compile: bin/vlock.bin bin/vlock.elf	
 	@echo "attempted compiling view-lock"
 
-bin/vlock.bin: view-lock/view-lock.ino
+bin/vlock.bin: view-lock/view-lock.ino view-lock/secrets.h view-lock/VLock.hpp view-lock/VLock.cpp
 	arduino-cli compile -b arduino:samd:nano_33_iot view-lock -o bin/vlock
