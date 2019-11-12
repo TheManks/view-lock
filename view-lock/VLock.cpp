@@ -16,6 +16,7 @@ void VLock::connLoop()
   static const char UNLOCK = 2;
   static const char STATUS = 0;
   
+  Serial.println(getState());
   
   int packetLen = connection->parsePacket();
   if(packetLen)
@@ -83,12 +84,27 @@ void VLock::status()
 
 void VLock::lock()
 {
+  if(!getState()) return
   Serial.println("Locking");
   actuator->step(512);
 }
 
 void VLock::unlock()
 {
+  if(getState()) return
   Serial.println("Unlocking");
   actuator->step(-512);
+}
+
+void VLock::getState()
+{
+  float x,y,z;
+  while(!IMU.accelerationAvailable()){}
+
+  IMU.readAcceleration(&x, &y, &z);
+
+  if(z > 0)
+    return 0;
+  else
+    return 1;
 }

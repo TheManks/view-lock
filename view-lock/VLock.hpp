@@ -13,11 +13,12 @@ class VLock
   void connLoop();
   void setup();
  private:
-
+  
   Stepper* actuator;
   WiFiUDP* connection;
   char msgBuffer[17];
   void status();
   void lock();
   void unlock();
+  void getState();
 };
