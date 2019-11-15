@@ -92,8 +92,12 @@ void VLock::lock()
     Serial.println("Already locked");
     return;
   }
+  // TODO: Maybe add manual safety counter so never go above 512
   Serial.println("Locking");
-  actuator->step(512);
+  while(!getDoneLocking())
+  {
+    actuator->step(64);
+  }
 }
 
 void VLock::unlock()
@@ -103,8 +107,13 @@ void VLock::unlock()
     Serial.println("Already unlocked");
     return;
   }
+  
   Serial.println("Unlocking");
-  actuator->step(-512);
+  // TODO: Maybe add manual safety counter so never go above 512
+  while(!getDoneUnlocking())
+  {
+    actuator->step(-64);
+  }
 }
 
 bool VLock::getState()
@@ -115,6 +124,32 @@ bool VLock::getState()
   IMU.readAcceleration(x, y, z);
 
   if(y > 0)
+    return true;
+  else
+    return false;
+}
+
+bool VLock::getDoneLocking()
+{
+  float x,y,z;
+  while(!IMU.accelerationAvailable()){}
+
+  IMU.readAcceleration(x, y, z);
+
+  if(y > IMU_LOCKED_THRESHOLD)
+    return true;
+  else
+    return false;
+}
+
+bool VLock::getDoneUnlocking()
+{
+  float x,y,z;
+  while(!IMU.accelerationAvailable()){}
+
+  IMU.readAcceleration(x, y, z);
+
+  if(y < IMU_UNLOCKED_THRESHOLD)
     return true;
   else
     return false;
