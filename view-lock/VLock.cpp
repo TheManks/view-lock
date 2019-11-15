@@ -16,7 +16,7 @@ void VLock::connLoop()
   static const char LOCK = 1;
   static const char UNLOCK = 2;
   static const char STATUS = 0;
-  
+
   int packetLen = connection->parsePacket();
   if(packetLen)
   {
@@ -110,14 +110,11 @@ void VLock::unlock()
 bool VLock::getState()
 {
   float x,y,z;
-  Serial.println("Looking for IMU data");
   while(!IMU.accelerationAvailable()){}
 
-  Serial.println("Geting IMU data");
-  
   IMU.readAcceleration(x, y, z);
-  
-  if(z > 0)
+
+  if(y > 0)
     return true;
   else
     return false;
