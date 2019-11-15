@@ -3,10 +3,10 @@
 #include <WiFiUdp.h>
 #include"secrets.h"
 #include"VLock.hpp"
-#define IN1 8
-#define IN2 9
-#define IN3 10
-#define IN4 11
+#define IN1 4
+#define IN2 5
+#define IN3 6
+#define IN4 7
 
 
 

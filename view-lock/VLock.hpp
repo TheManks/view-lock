@@ -2,6 +2,7 @@
 #include<Stepper.h>
 #include<WiFiUdp.h>
 #include<Arduino.h>
+#include <Arduino_LSM6DS3.h>
 
 #define MSG_SIZE  17
 #define SPEED     5 // TODO: Figure out if this is too fast.
@@ -20,5 +21,5 @@ class VLock
   void status();
   void lock();
   void unlock();
-  void getState();
+  bool getState();
 };

@@ -4,6 +4,7 @@
 #include <WiFiUdp.h>
 #include <WiFiNINA.h>
 #include <Arduino.h>
+#include <Arduino_LSM6DS3.h>
 VLock::VLock(Stepper* motor, WiFiUDP* conn)
 {
   actuator = motor;
@@ -15,8 +16,6 @@ void VLock::connLoop()
   static const char LOCK = 1;
   static const char UNLOCK = 2;
   static const char STATUS = 0;
-  
-  Serial.println(getState());
   
   int packetLen = connection->parsePacket();
   if(packetLen)
@@ -74,6 +73,10 @@ void VLock::setup()
 
   Serial.println("Starting UDP Listener");
   connection->begin(LOCK_PORT);
+
+  Serial.println("Init imu");
+  
+  if (!IMU.begin()) Serial.println("IMU did not initialize");
 }
 
 void VLock::status()
@@ -84,27 +87,38 @@ void VLock::status()
 
 void VLock::lock()
 {
-  if(!getState()) return
+  if(!getState())
+  {
+    Serial.println("Already locked");
+    return;
+  }
   Serial.println("Locking");
   actuator->step(512);
 }
 
 void VLock::unlock()
 {
-  if(getState()) return
+  if(getState())
+  {
+    Serial.println("Already unlocked");
+    return;
+  }
   Serial.println("Unlocking");
   actuator->step(-512);
 }
 
-void VLock::getState()
+bool VLock::getState()
 {
   float x,y,z;
+  Serial.println("Looking for IMU data");
   while(!IMU.accelerationAvailable()){}
 
-  IMU.readAcceleration(&x, &y, &z);
-
+  Serial.println("Geting IMU data");
+  
+  IMU.readAcceleration(x, y, z);
+  
   if(z > 0)
-    return 0;
+    return true;
   else
-    return 1;
+    return false;
 }
