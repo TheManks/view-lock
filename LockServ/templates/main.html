@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<head>
+   <title>View House Vaporthon</title>
+</head>
+
+<body>
+   <h1><font color="green"><b>Merry</b></font> <font color="red"><b>Christmas</b></font>  </h1>
+
+</body>
+    	
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+        $(function() {
+          $('a#test').bind('click', function() {
+            $.getJSON('/background_process_test',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
+
+
+//button
+<div class='container'>
+    <h3>Test</h3>
+        <form>
+            <a href=# id=test><button class='btn btn-default'>Test</button></a>
+        </form>
+
+</div>
+
+
+
+<div id="content">{% block content %}{% endblock %}</div>
+	<div id="footer">
+        {% block footer %}
+        &copy; Copyright 2008 by <a href="http://domain.invalid/">you</a>.
+        {% endblock %}
+    	</div>
+
+</html>
+
