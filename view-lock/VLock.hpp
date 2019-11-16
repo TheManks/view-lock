@@ -5,7 +5,7 @@
 #include <Arduino_LSM6DS3.h>
 
 #define MSG_SIZE                    17
-#define SPEED                       5 // TODO: Figure out if this is too fast.
+#define SPEED                       2 // TODO: Figure out if this is too fast.
 #define IMU_LOCKED_THRESHOLD        0.6
 #define IMU_UNLOCKED_THRESHOLD      -0.6
 

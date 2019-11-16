@@ -87,7 +87,7 @@ void VLock::status()
 
 void VLock::lock()
 {
-  if(!getState())
+  if(getState())
   {
     Serial.println("Already locked");
     return;
@@ -102,7 +102,7 @@ void VLock::lock()
 
 void VLock::unlock()
 {
-  if(getState())
+  if(!getState())
   {
     Serial.println("Already unlocked");
     return;
@@ -136,6 +136,8 @@ bool VLock::getDoneLocking()
 
   IMU.readAcceleration(x, y, z);
 
+  Serial.print("Y: ");Serial.println(y);
+  
   if(y > IMU_LOCKED_THRESHOLD)
     return true;
   else
@@ -149,6 +151,8 @@ bool VLock::getDoneUnlocking()
 
   IMU.readAcceleration(x, y, z);
 
+  Serial.print("Y: ");Serial.println(y);
+ 
   if(y < IMU_UNLOCKED_THRESHOLD)
     return true;
   else
