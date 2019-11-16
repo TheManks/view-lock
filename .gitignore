@@ -6,3 +6,5 @@
 
 # Secrets
 secrets.h
+config.ini
+session.txt
