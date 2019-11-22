@@ -1,11 +1,11 @@
 #include "VLock.hpp"
 #include "secrets.h"
-#include <Stepper.h>
+#include <AccelStepper.h>
 #include <WiFiUdp.h>
 #include <WiFiNINA.h>
 #include <Arduino.h>
 #include <Arduino_LSM6DS3.h>
-VLock::VLock(Stepper* motor, WiFiUDP* conn)
+VLock::VLock(AccelStepper* motor, WiFiUDP* conn)
 {
   actuator = motor;
   connection = conn;
@@ -48,7 +48,7 @@ void VLock::setup()
 {
   int conn_stat = WL_IDLE_STATUS;
 
-  actuator->setSpeed(5);
+  actuator->setMaxSpeed(500);
   
   // check for the WiFi module:
   if (WiFi.status() == WL_NO_MODULE) {
@@ -92,11 +92,13 @@ void VLock::lock()
     Serial.println("Already locked");
     return;
   }
+
+  actuator->setSpeed(-200);
   // TODO: Maybe add manual safety counter so never go above 512
   Serial.println("Locking");
   while(!getDoneLocking())
   {
-    actuator->step(64);
+    actuator->runSpeed();
   }
 }
 
@@ -109,10 +111,11 @@ void VLock::unlock()
   }
   
   Serial.println("Unlocking");
+  actuator->setSpeed(200);
   // TODO: Maybe add manual safety counter so never go above 512
   while(!getDoneUnlocking())
   {
-    actuator->step(-64);
+    actuator->runSpeed();
   }
 }
 
