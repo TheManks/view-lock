@@ -8,7 +8,7 @@ int modulo(int x,int N){
     return (x % N + N) %N;
 }
 
-ViewStepper(int spr, int pinA1, int pinA2, int pinB1, int pinB2)
+ViewStepper::ViewStepper(int spr, int pinA1, int pinA2, int pinB1, int pinB2)
 {
   A1 = pinA1;
   A2 = pinA2;
@@ -17,12 +17,12 @@ ViewStepper(int spr, int pinA1, int pinA2, int pinB1, int pinB2)
   stepsPerRev = spr;
   period = 0;
 }
-void setSpeed(float speed)
+void ViewStepper::setSpeed(float speed)
 {
   float stepsPerMsec = (((float) stepsPerRev)*speed)/60;
   curr_period = (int) (1/stepsPerMsec);
 }
-void step(int steps)
+void ViewStepper::step(int steps)
 {
   int sign = sgn(count);
   count = abs(count);
@@ -33,7 +33,7 @@ void step(int steps)
   }
 }
 
-void oneStep(int dir)
+void ViewStepper::oneStep(int dir)
 {
   switch(state)
   {
@@ -65,5 +65,13 @@ void oneStep(int dir)
      digitalWrite(B2,HIGH);
      break;
   }
-  state = modulo(state+1,4);
+  state = modulo(state+dir,4);
+}
+
+void ViewStepper::freeWheel()
+{
+  digitalWrite(A1,LOW);
+  digitalWrite(A2,LOW);
+  digitalWrite(B1,LOW);
+  digitalWrite(B2,LOW);
 }

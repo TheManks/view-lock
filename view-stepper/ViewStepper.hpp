@@ -11,6 +11,7 @@ class ViewStepper
   ViewStepper(int spr, int pinA1, int pinA2, int pinB1, int pinB2);
   void setSpeed(float speed);
   void step(int count);
+  void freeWheel();
  private:
   void oneStep(int dir);
   int A1,A2,B1,B2;
