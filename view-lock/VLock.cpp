@@ -1,11 +1,11 @@
 #include "VLock.hpp"
 #include "secrets.h"
-#include <Stepper.h>
+#include "ViewStepper.hpp"
 #include <WiFiUdp.h>
 #include <WiFiNINA.h>
 #include <Arduino.h>
 #include <Arduino_LSM6DS3.h>
-VLock::VLock(Stepper* motor, WiFiUDP* conn)
+VLock::VLock(ViewStepper* motor, WiFiUDP* conn)
 {
   actuator = motor;
   connection = conn;
@@ -48,7 +48,7 @@ void VLock::setup()
 {
   int conn_stat = WL_IDLE_STATUS;
 
-  actuator->setSpeed(5);
+  actuator->setSpeed(1);
   
   // check for the WiFi module:
   if (WiFi.status() == WL_NO_MODULE) {
