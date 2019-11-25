@@ -1,12 +1,12 @@
-#include<Stepper.h>
-#include<WiFiNINA.h>
+#include "ViewStepper.hpp"
+#include <WiFiNINA.h>
 #include <WiFiUdp.h>
-#include"secrets.h"
-#include"VLock.hpp"
+#include "secrets.h"
+#include "VLock.hpp"
 #define IN1 4
 #define IN2 5
-#define IN3 6
-#define IN4 7
+#define IN3 2
+#define IN4 3
 
 
 
@@ -14,14 +14,13 @@
 int status = WL_IDLE_STATUS;
 
 WiFiUDP Udp;
-Stepper actuator = Stepper(4096, IN1, IN2, IN3, IN4);
+ViewStepper actuator = ViewStepper(4096, IN1, IN2, IN3, IN4);
 VLock vlock = VLock(&actuator, &Udp);
 
 
 void setup() {
   Serial.begin(9600);
   
-
   setupActuator();
   vlock.setup();
 }

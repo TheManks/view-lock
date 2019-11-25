@@ -14,8 +14,8 @@ class ViewStepper
   void freeWheel();
  private:
   void oneStep(int dir);
-  int A1,A2,B1,B2;
+  int a1,a2,b1,b2;
   char state = 0;
   int stepsPerRev;
-  int eriod;
+  int period;
 };
